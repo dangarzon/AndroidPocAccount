@@ -11,6 +11,12 @@
         android:theme="@style/AppTheme">
 
         <activity
+            android:name=".LandActivity"
+            android:label="@string/activity_land">
+
+        </activity>
+
+        <activity
             android:name=".LoginActivity"
             android:label="@string/activity_login">
 
