@@ -1,3 +1,5 @@
 <resources>
+    <string name="activity_main">Account - Main</string>
     <string name="app_name">Account</string>
+    <string name="layout_main">Main Layout</string>
 </resources>
