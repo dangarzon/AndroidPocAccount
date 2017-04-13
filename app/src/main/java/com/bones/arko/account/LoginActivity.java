@@ -2,6 +2,7 @@ package com.bones.arko.account;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -20,7 +21,13 @@ public class LoginActivity extends AppCompatActivity {
 
         Account account = createAccount();
 
-        storeAccount(account);
+        Boolean stored = storeAccount(account);
+
+        if (stored) {
+            // Go to Main
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
     }
 
     /**
