@@ -13,7 +13,11 @@
         <activity
             android:name=".LandActivity"
             android:label="@string/activity_land">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity
@@ -25,11 +29,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/activity_main">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
     </application>
