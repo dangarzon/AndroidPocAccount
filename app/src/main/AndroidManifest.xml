@@ -11,6 +11,12 @@
         android:theme="@style/AppTheme">
 
         <activity
+            android:name=".LoginActivity"
+            android:label="@string/activity_login">
+
+        </activity>
+
+        <activity
             android:name=".MainActivity"
             android:label="@string/activity_main">
             <intent-filter>
