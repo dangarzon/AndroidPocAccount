@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,6 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     // UI references.
+    private TextView mErrorView;
     private EditText mUsernameView;
     private EditText mPasswordView;
 
@@ -40,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         // Locate References
+        mErrorView = (TextView) findViewById(R.id.error_text_view);
         mUsernameView = (EditText) findViewById(R.id.user_edit_text);
         mPasswordView = (EditText) findViewById(R.id.pass_edit_text);
 
@@ -55,6 +58,14 @@ public class LoginActivity extends AppCompatActivity {
                 AsyncTask.execute(new Runnable() {
                     @Override
                     public void run() {
+                        // Clean errors
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mErrorView.setText("");
+                            }
+                        });
+
                         String user = mUsernameView.getText().toString();
                         String pass = mPasswordView.getText().toString();
 
@@ -69,7 +80,19 @@ public class LoginActivity extends AppCompatActivity {
 
                             if (stored) {
                                 goMain();
+                            } else {
+                                token = null;
                             }
+                        }
+
+                        // If login is not ok, show error
+                        if (null == token) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mErrorView.setText(R.string.check_credentials);
+                                }
+                            });
                         }
                     }
                 });

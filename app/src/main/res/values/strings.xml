@@ -3,6 +3,7 @@
     <string name="activity_login">Account - Login</string>
     <string name="activity_main">Account - Main</string>
     <string name="app_name">Account</string>
+    <string name="check_credentials">Check your credentials</string>
     <string name="layout_land">Land Layout</string>
     <string name="layout_login">Login Layout</string>
     <string name="layout_main">Main Layout</string>
