@@ -126,6 +126,14 @@ public class MainActivity extends AppCompatActivity {
                 "Authorization",
                 "Bearer " + token
             );
+            connection.setRequestProperty(
+                "Content-Type",
+                "application/json"
+            );
+            connection.setRequestProperty(
+                "TrackingInfo",
+                "1234567890"
+            );
 
             statusCode = connection.getResponseCode();
         } catch (IOException e) {
