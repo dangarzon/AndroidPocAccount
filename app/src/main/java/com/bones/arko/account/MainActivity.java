@@ -21,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    private AccountManager accountManager;
+
     private View mProgressView;
 
     /**
@@ -30,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Extract Account Manager
+        this.accountManager = AccountManager.get(this);
 
         showUserInfo();
 
@@ -47,6 +52,19 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private Account getAccount() {
+        Account account = null;
+        Account[] accounts = accountManager.getAccountsByType(getString(R.string.account_type));
+
+        for (Account item : accounts) {
+            if (item.name.equals(getString(R.string.account_name))) {
+                account = item;
+            }
+        }
+
+        return account;
+    }
+
     /**
      * Start Land Activity
      */
@@ -60,30 +78,26 @@ public class MainActivity extends AppCompatActivity {
      * Remove Account from AccountManager
      */
     private void logout() {
-        AccountManager accountManager = AccountManager.get(this);
-        Account[] accounts = accountManager.getAccountsByType(getString(R.string.account_type));
+        Account account = getAccount();
 
-        for (Account account : accounts) {
-            if (account.name.equals(getString(R.string.account_name))) {
-                // Use deprecated function to keep compatibility with SDK19 (Android KitKat)
-                accountManager.removeAccount(
-                    account,
-                    new AccountManagerCallback<Boolean>() {
-                        @Override
-                        public void run(AccountManagerFuture<Boolean> future) {
-                            try {
-                                if (future.getResult()) {
-                                    Log.d(TAG, "Account Removed");
-                                    goLandActivity();
-                                }
-                            } catch (OperationCanceledException | IOException | AuthenticatorException e) {
-                                Log.d(TAG, "Account failed to remove");
+        if (null != account) {
+            accountManager.removeAccount(
+                account,
+                new AccountManagerCallback<Boolean>() {
+                    @Override
+                    public void run(AccountManagerFuture<Boolean> future) {
+                        try {
+                            if (future.getResult()) {
+                                Log.d(TAG, "Account Removed");
+                                goLandActivity();
                             }
+                        } catch (OperationCanceledException | IOException | AuthenticatorException e) {
+                            Log.d(TAG, "Account failed to remove");
                         }
-                    },
-                    null
-                );
-            }
+                    }
+                },
+                null
+            );
         }
     }
 
@@ -91,19 +105,16 @@ public class MainActivity extends AppCompatActivity {
      * Display user info from Account in UserInfo TextView
      */
     private void showUserInfo() {
-        AccountManager accountManager = AccountManager.get(this);
-        Account[] accounts = accountManager.getAccountsByType(getString(R.string.account_type));
+        Account account = getAccount();
 
-        for (Account account : accounts) {
-            if (account.name.equals(getString(R.string.account_name))) {
-                TextView mUserInfoTextArea = (TextView) findViewById(R.id.user_info_text_view);
+        if (null != account) {
+            TextView mUserInfoTextArea = (TextView) findViewById(R.id.user_info_text_view);
 
-                String info = accountManager.getUserData(account, "user")
-                    + ":"
-                    + accountManager.getUserData(account, "pass");
+            String info = accountManager.getUserData(account, "user")
+                + ":"
+                + accountManager.getUserData(account, "pass");
 
-                mUserInfoTextArea.setText(info);
-            }
+            mUserInfoTextArea.setText(info);
         }
     }
 
