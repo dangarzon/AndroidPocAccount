@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
         Account account = getAccount();
 
         if (null != account) {
+            // user:pass
             TextView mUserInfoTextArea = (TextView) findViewById(R.id.user_info_text_view);
 
             String info = accountManager.getUserData(account, "user")
@@ -115,6 +116,13 @@ public class MainActivity extends AppCompatActivity {
                 + accountManager.getUserData(account, "pass");
 
             mUserInfoTextArea.setText(info);
+
+            // token
+            TextView mTokenTextArea = (TextView) findViewById(R.id.token_text_view);
+
+            String token = accountManager.getUserData(account, "token");
+
+            mTokenTextArea.setText(token);
         }
     }
 
