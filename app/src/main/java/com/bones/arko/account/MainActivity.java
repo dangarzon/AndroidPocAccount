@@ -48,6 +48,22 @@ public class MainActivity extends AppCompatActivity {
         mProgressView = findViewById(R.id.progress_bar);
         mResponseTextView = (TextView) findViewById(R.id.response_text_view);
 
+        // Bind token ko button to action
+        Button mTokenKoButton = (Button) findViewById(R.id.call_token_ko_button);
+        mTokenKoButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.setEnabled(false);
+
+                String token = getToken();
+
+                processCall(
+                    getString(R.string.uri_secured),
+                    new StringBuilder(token).reverse().toString()
+                );
+            }
+        });
+
         // Bind token ok button to action
         Button mTokenOkButton = (Button) findViewById(R.id.call_token_ok_button);
         mTokenOkButton.setOnClickListener(new OnClickListener() {

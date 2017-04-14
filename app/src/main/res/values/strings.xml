@@ -8,5 +8,6 @@
     <string name="layout_main">Main Layout</string>
     <string name="login">Login</string>
     <string name="logout">Logout</string>
+    <string name="token_ko">Token KO</string>
     <string name="token_ok">Token OK</string>
 </resources>
