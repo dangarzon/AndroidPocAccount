@@ -3,6 +3,8 @@
     <string name="account_name">Arko Bones</string>
     <string name="account_password">lololo</string>
     <string name="account_type">com.bones.arko.account.DEMOACCOUNT</string>
+    <string name="identity_uri">https://localhost/oauth2/token</string>
+    <string name="identity_token">1234567890</string>
     <string name="username">username</string>
     <string name="password">password</string>
 </resources>

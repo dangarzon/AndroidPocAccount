@@ -3,12 +3,24 @@ package com.bones.arko.account;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -27,18 +39,27 @@ public class LoginActivity extends AppCompatActivity {
         mLoginButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Account account = createAccount();
+                AsyncTask.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        String user = getString(R.string.username);
+                        String pass = getString(R.string.password);
 
-                Bundle bundle = fillInfo(
-                    getString(R.string.username),
-                    getString(R.string.password)
-                );
+                        String token = remoteAuth(user, pass);
 
-                Boolean stored = storeAccount(account, bundle);
+                        if (null != token) {
+                            Account account = createAccount();
 
-                if (stored) {
-                    goMain();
-                }
+                            Bundle bundle = fillInfo(user, pass, token);
+
+                            Boolean stored = storeAccount(account, bundle);
+
+                            if (stored) {
+                                goMain();
+                            }
+                        }
+                    }
+                });
             }
         });
     }
@@ -61,13 +82,15 @@ public class LoginActivity extends AppCompatActivity {
      *
      * @param user user value for user key
      * @param pass pass value for pass key
+     * @param token pass value for token key
      * @return filled bundle
      */
-    private Bundle fillInfo(String user, String pass) {
+    private Bundle fillInfo(String user, String pass, String token) {
         Bundle bundle = new Bundle();
 
         bundle.putString("user", user);
         bundle.putString("pass", pass);
+        bundle.putString("token", token);
 
         return bundle;
     }
@@ -78,6 +101,55 @@ public class LoginActivity extends AppCompatActivity {
     private void goMain() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+
+    /**
+     * Auth with remove service with given credentials
+     *
+     * @param user username
+     * @param pass password
+     * @return auth token
+     */
+    private String remoteAuth(String user, String pass) {
+        String token = null;
+
+        try {
+            String params = "?grant_type=password&username=" + user + "&password=" + pass;
+            URL url = new URL(getString(R.string.identity_uri) + params);
+
+            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty(
+                "Authorization",
+                "Basic " + getString(R.string.identity_token)
+            );
+            connection.setRequestProperty(
+                "Content-Type",
+                "application/x-www-form-urlencoded"
+            );
+
+            int statusCode = connection.getResponseCode();
+
+            if (statusCode == 200) {
+                InputStream stream = connection.getInputStream();
+                InputStreamReader reader = new InputStreamReader(stream);
+                BufferedReader bufferedReader = new BufferedReader(reader);
+
+                String response = bufferedReader.readLine();
+
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    token = (String) jsonObject.get("access_token");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return token;
     }
 
     /**
