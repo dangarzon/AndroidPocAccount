@@ -29,7 +29,12 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Account account = createAccount();
 
-                Boolean stored = storeAccount(account);
+                Bundle bundle = fillInfo(
+                    getString(R.string.username),
+                    getString(R.string.password)
+                );
+
+                Boolean stored = storeAccount(account, bundle);
 
                 if (stored) {
                     goMain();
@@ -52,6 +57,22 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
+     * Create Bundle with provided info
+     *
+     * @param user user value for user key
+     * @param pass pass value for pass key
+     * @return filled bundle
+     */
+    private Bundle fillInfo(String user, String pass) {
+        Bundle bundle = new Bundle();
+
+        bundle.putString("user", user);
+        bundle.putString("pass", pass);
+
+        return bundle;
+    }
+
+    /**
      * Start Main Activity
      */
     private void goMain() {
@@ -65,13 +86,13 @@ public class LoginActivity extends AppCompatActivity {
      * @param account Account to store
      * @return true if the Account was added to AccountManager
      */
-    private boolean storeAccount(Account account) {
+    private boolean storeAccount(Account account, Bundle bundle) {
         AccountManager accountManager = AccountManager.get(this);
 
         boolean success = accountManager.addAccountExplicitly(
             account,
-            getString(R.string.account_password),
-            null
+            getString(R.string.app_name),
+            bundle
         );
 
         if (success) {
