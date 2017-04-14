@@ -20,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    private View mProgressView;
+
     /**
      * {@inheritDoc}
      */
@@ -28,11 +30,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mProgressView = findViewById(R.id.progress_bar);
+
         // Bind logout button to action
         Button mLogoutButton = (Button) findViewById(R.id.logout_button);
         mLogoutButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.setEnabled(false);
+                mProgressView.setVisibility(View.VISIBLE);
                 logout();
             }
         });
