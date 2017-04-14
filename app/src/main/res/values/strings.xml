@@ -6,4 +6,5 @@
     <string name="layout_land">Land Layout</string>
     <string name="layout_login">Login Layout</string>
     <string name="layout_main">Main Layout</string>
+    <string name="login">Login</string>
 </resources>

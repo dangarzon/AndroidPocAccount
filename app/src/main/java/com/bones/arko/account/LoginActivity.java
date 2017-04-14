@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -19,15 +22,20 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Account account = createAccount();
+        // Bind logout button to action
+        Button mLoginButton = (Button) findViewById(R.id.login_button);
+        mLoginButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Account account = createAccount();
 
-        Boolean stored = storeAccount(account);
+                Boolean stored = storeAccount(account);
 
-        if (stored) {
-            // Go to Main
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-        }
+                if (stored) {
+                    goMain();
+                }
+            }
+        });
     }
 
     /**
@@ -41,6 +49,14 @@ public class LoginActivity extends AppCompatActivity {
             getString(R.string.account_name),
             getString(R.string.account_type)
         );
+    }
+
+    /**
+     * Start Main Activity
+     */
+    private void goMain() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     /**
