@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.io.IOException;
 
@@ -30,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        showUserInfo();
+
         mProgressView = findViewById(R.id.progress_bar);
 
         // Bind logout button to action
@@ -42,6 +45,14 @@ public class MainActivity extends AppCompatActivity {
                 logout();
             }
         });
+    }
+
+    /**
+     * Start Land Activity
+     */
+    private void goLandActivity() {
+        Intent intent = new Intent(this, LandActivity.class);
+        startActivity(intent);
     }
 
     /**
@@ -77,11 +88,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Start Land Activity
+     * Display user info from Account in UserInfo TextView
      */
-    private void goLandActivity() {
-        Intent intent = new Intent(this, LandActivity.class);
-        startActivity(intent);
+    private void showUserInfo() {
+        AccountManager accountManager = AccountManager.get(this);
+        Account[] accounts = accountManager.getAccountsByType(getString(R.string.account_type));
+
+        for (Account account : accounts) {
+            if (account.name.equals(getString(R.string.account_name))) {
+                TextView mUserInfoTextArea = (TextView) findViewById(R.id.user_info_text_view);
+
+                String info = accountManager.getUserData(account, "user")
+                    + ":"
+                    + accountManager.getUserData(account, "pass");
+
+                mUserInfoTextArea.setText(info);
+            }
+        }
     }
 
 }
