@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 v.setEnabled(false);
+                mResponseTextView.setText("");
 
                 processCall(
                     getString(R.string.uri_unsecured),
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 v.setEnabled(false);
+                mResponseTextView.setText("");
 
                 String token = getToken();
 
@@ -84,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 v.setEnabled(false);
+                mResponseTextView.setText("");
 
                 String token = getToken();
 
