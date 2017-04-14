@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,6 +27,10 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    // UI references.
+    private EditText mUsernameView;
+    private EditText mPasswordView;
+
     /**
      * {@inheritDoc}
      */
@@ -33,6 +38,14 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // Locate References
+        mUsernameView = (EditText) findViewById(R.id.user_edit_text);
+        mPasswordView = (EditText) findViewById(R.id.pass_edit_text);
+
+        // Init
+        mUsernameView.setText(R.string.username);
+        mPasswordView.setText(R.string.password);
 
         // Bind logout button to action
         Button mLoginButton = (Button) findViewById(R.id.login_button);
@@ -42,8 +55,8 @@ public class LoginActivity extends AppCompatActivity {
                 AsyncTask.execute(new Runnable() {
                     @Override
                     public void run() {
-                        String user = getString(R.string.username);
-                        String pass = getString(R.string.password);
+                        String user = mUsernameView.getText().toString();
+                        String pass = mPasswordView.getText().toString();
 
                         String token = remoteAuth(user, pass);
 

@@ -7,6 +7,8 @@
     <string name="layout_login">Login Layout</string>
     <string name="layout_main">Main Layout</string>
     <string name="login">Login</string>
+    <string name="login_username">Username</string>
+    <string name="login_password">Password</string>
     <string name="logout">Logout</string>
     <string name="token_ko">Token KO</string>
     <string name="token_no">Token NO</string>
