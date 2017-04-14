@@ -5,6 +5,7 @@
     <string name="account_type">com.bones.arko.account.DEMOACCOUNT</string>
     <string name="identity_uri">https://localhost/oauth2/token</string>
     <string name="identity_token">1234567890</string>
+    <string name="uri_unsecured">https://localhost/token</string>
     <string name="uri_secured">https://localhost/oauth2/info</string>
     <string name="username">username</string>
     <string name="password">password</string>
